@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    function Person(name) {
+      this.name = name
+    }
+    Person.prototype.getName = function() {
+      console.log(this.name);
+    }
+
+    function Car(model) {
+      this.model = model
+    }
+    Car.prototype.getModel = function() {
+      console.log(this.model);
+    }
+
+    function create(type, args) {
+      if(!(this instanceof create)) {
+        return new create(type, args)
+      }
+
+      return new this[type](args)
+    }
+
+    create.prototype = {
+      person: Person,
+      car: Car
+    }
+
+    const person1 =  create('person', 'zhangsan')
+    const car1 = new create('car', 'tesla')
+
+    person1.getName()
+    car1.getModel()
+
+    /**
+     * 实现过程：
+     * new create('person', 'zhangsan')  ->  {
+     *    __proto__: {
+     *        person: Person,
+              car: Car
+     *    }
+     * }
+     * 
+     * new this[type](args)  ->  new Person(args)  {
+     *    __proto__: Person.prototype,
+     *    name: 'zhangsan'
+     * }
+     * 
+    */
+
+
+  </script>
+</head>
+<body>
+  
+</body>
+</html>

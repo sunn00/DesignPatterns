@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    /**
+     * 背景： 简历信息整合
+    */
+    let data = [
+      {
+        name: 'zhang san',
+        age: 30,
+        work: "engineer"
+      },
+      {
+        name: 'li si',
+        age: 30,
+        work: "teacher"
+      },
+      {
+        name: 'wang wu',
+        age: 30,
+        work: "student"
+      },
+    ]
+
+    function Candidate(param) {
+      let _candidate = new Person(param)
+
+      _candidate.name = new CreateName(param.name)
+      _candidate.work = new CreateWork(param.work)
+
+      return _candidate
+    }
+
+    function Person(param) {
+      this.name = param.name
+      this.age = param.age
+    }
+
+    function CreateName(param) {
+      this.firstName = param.split(' ')[0]
+      this.lastName = param.split(' ')[1]
+    }
+
+    function CreateWork(param) {
+      switch (param) {
+        case 'engineer':
+          this.name = '工程师'
+          this.description = '热爱编程'
+          break
+        case 'teacher':
+          this.name = '教师'
+          this.description = '热爱学习'
+          break
+        default:
+          this.name = param
+          this.description = ''
+      }
+    }
+    CreateWork.prototype.changeName = function (name) {
+      this.name = name
+    }
+    CreateWork.prototype.changeDesc = function (desc) {
+      this.description = desc
+    }
+
+    // 使用
+    let candidateArr = []
+
+    for (let i = 0, length = data.length; i < length; i++) {
+      candidateArr[i] = Candidate(data[i])
+    }
+
+    console.log(candidateArr);
+    candidateArr[2].work.changeDesc('爱敬啥的空间')
+  </script>
+</head>
+
+<body>
+  <h4>介绍</h4>
+  建造者模式注重创建对象的细节，使用这种模式创建出的复杂对象或复合对象的结构十分清晰
+  在软件系统中，有时候面临着“一个复杂对象”的创建工作，其通常由各个部分的子对象用一定的算法构成；由于需求的变化，这个复杂对象的各个部分经常面临着剧烈的变化，但是将它们组合在一起的算法确相对稳定。如何应对这种变化？如何提供一种“封装机制”来隔离出“复杂对象的各个部分”的变化，从而保持系统中的“稳定构建算法”不随着需求改变而改变？这就是要说的建造者模式。
+
+  建造者模式可以将一个复杂对象的构建与其表示相分离，使得同样的构建过程可以创建不同的表示。也就是说如果我们用了建造者模式，那么用户就需要指定需要建造的类型就可以得到它们，而具体建造的过程和细节就不需要知道了。
+
+  <h4>使用场景</h4>
+  建造者模式主要用于“分步骤构建一个复杂的对象”，在这其中“分步骤”是一个稳定的算法，而复杂对象的各个部分则经常变化，其优点是：建造者模式的“加工工艺”是暴露的，这样使得建造者模式更加灵活，并且建造者模式解耦了组装过程和创建具体部件，使得我们不用去关心每个部件是如何组装的。
+</body>
+
+</html>

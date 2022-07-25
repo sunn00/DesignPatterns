@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    // 非单例模式
+    function notSingle() {
+      return {
+        a: 1
+      }
+    }
+
+    const a = notSingle()
+    const b = notSingle()
+    console.log(a === b); // false
+
+    function NotSingle() {
+      this.a = 1
+    }
+
+    const a1 = notSingle()
+    const b1 = notSingle()
+    console.log(a1 === b1); // false
+
+    // 单例模式
+
+    // 缺点在于将unique暴露在外，可以被随意修改
+    // let _unique = null
+
+    // function createSingle() {
+    //   const obj = {
+    //     a: 1
+    //   }
+    //   if (_unique === null) {
+    //     _unique = obj
+    //   }
+
+    //   return _unique
+    // }
+
+    // 使用闭包修改
+    let createSingle = (function () {
+      let _unique = null
+
+      function createObj(name) {
+        this.name = name
+      }
+
+      return function () {
+        
+        if (_unique === null) {
+          _unique = new createObj()
+        }
+
+        return _unique
+      }
+    })()
+
+    const c = createSingle()
+    const d = createSingle()
+    console.log(c === d); // true
+
+    function CreateSingle() {
+      this.inst = null
+      return function () {
+        if (!this.inst) {
+          this.inst = new CreateSingle()
+        }
+        return this.inst
+      }
+    }
+
+    const c1 = new CreateSingle()
+    const d1 = new CreateSingle()
+    console.log(c1 === d1); // true
+
+  </script>
+</head>
+
+<body>
+  <h4>介绍</h4>
+  单例模式就是希望可以在使用方法创建对象的时候，无论创建多少次对象都指向同一个
+  在传统开发工程师眼里，单例就是保证一个类只有一个实例，实现的方法一般是先判断实例存在与否，如果存在直接返回，如果不存在就创建了再返回，这就确保了一个类只有一个实例对象。在JavaScript里，单例作为一个命名空间提供者，从全局命名空间里提供一个唯一的访问点来访问该对象。
+</body>
+
+</html>

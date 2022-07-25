@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+
+    function A(name) {
+      this.name = name
+      this.list = [1, 2, 3]
+    }
+
+    A.prototype.getName = function () {
+      console.log(this.name);
+    }
+
+    function B(name) {
+      A.call(this, name)
+      this.subName = `sub ${this.name}`
+    }
+
+
+    // B.prototype = new A()
+    // 通过中间函数F，避免重复执行A函数，而直接调用A的构造函数
+    function inheritPrototype(subclass, superclass) {
+      function F() { }
+      F.prototype = superclass.prototype
+      subclass.prototype = new F()
+      // 由于F为一个新函数，所以subclass.prototype没有constructor属性
+      subclass.prototype.constructor = subclass
+    }
+    inheritPrototype(B, A)
+
+    const b = new B('bname')
+    b.getName()
+    console.log(b.name, b.list, b.subName)
+
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
