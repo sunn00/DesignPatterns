@@ -46,14 +46,14 @@
     let createSingle = (function () {
       let _unique = null
 
-      function createObj(name) {
+      function CreateObj(name) {
         this.name = name
       }
 
       return function () {
         
         if (_unique === null) {
-          _unique = new createObj()
+          _unique = new CreateObj()
         }
 
         return _unique
@@ -63,21 +63,6 @@
     const c = createSingle()
     const d = createSingle()
     console.log(c === d); // true
-
-    function CreateSingle() {
-      this.inst = null
-      return function () {
-        if (!this.inst) {
-          this.inst = new CreateSingle()
-        }
-        return this.inst
-      }
-    }
-
-    const c1 = new CreateSingle()
-    const d1 = new CreateSingle()
-    console.log(c1 === d1); // true
-
   </script>
 </head>
 

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h4>介绍</h4>
+  <p>组合模式作用域将多个部分通过组合变成一个整体。</p>
+  <p>eg. 麦当劳点汉堡、薯条、可乐，我们可以把这些东西看成一个个部分或者组件，就可以将整个套餐产出给客户，这就是组合模式。</p>
+  <p>组合模式（Composite）将对象组合成树形结构以表示“部分-整体”的层次结构，组合模式使得用户对单个对象和组合对象的使用具有一致性。</p>
+
+  <h4>使用场景</h4>
+  组合模式的使用场景非常明确：
+  <ol>
+    <li>
+      你想表示对象的部分-整体层次结构时；
+    </li>
+    <li>
+      你希望用户忽略组合对象和单个对象的不同，用户将统一地使用组合结构中的所有对象（方法）
+    </li>
+  </ol>
+  另外该模式经常和装饰者一起使用，它们通常有一个公共的父类（也就是原型），因此装饰必须支持具有add、remove、getChild操作的 component接口。
+</body>
+
+</html>

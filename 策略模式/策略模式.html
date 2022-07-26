@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    var formStrategy = (function () {
+      // 存放所有策略
+      var strategy = {
+        notEmpty: function (value) {
+          return value.length ? '' : '请填写内容'
+        },
+        isNumber: function (value) {
+          var reg = /^[0-9]+(\.[0-9]+)?$/;
+          return reg.test(value) ? "" : "请填写数字";
+        },
+        isPhone: function (value) {
+          var reg = /^\d{3}-\d{8}$|^\d{4}-\d{7}$/;
+          return reg.test(value) ? "" : "请填写固话";
+        },
+      }
+
+      return {
+        validate: function (type, value) {
+          value = value.replace(/^\s|\s+$/, '')
+          strategy[type] ? strategy[type](value) : '没有该检测方法，请添加'
+        },
+        addStrategy(type, fn) {
+          if (strategy[type]) {
+            return '该方法已存在'
+          }
+
+          strategy[type] = fn
+        }
+      }
+    })()
+
+    window.onload = function () {
+      formStrategy.addStrategy("isEmail", function (value) {
+        var reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        return reg.test(value) ? "" : "请填写邮箱";
+      });
+
+      var oInput = document.querySelector("input");
+      oInput.onchange = function () {
+        var result;
+        result =
+          formStrategy.validate("notEmpty", this.value) ||
+          // formStrategy.validate("isNumber", this.value) ||
+          formStrategy.validate("isEmail", this.value) ||
+          "通过";
+        console.log(result);
+      };
+    };
+  </script>
+</head>
+
+<body>
+  <input type="text" />
+  
+  <h4>介绍</h4>
+  策略模式定义了一系列算法，从概念上来说，所有的这些算法都是做相同的事情，只是实现不同，他可以以相同的方式调用所有的方法，减少了各种算法类与使用算法类之间的耦合。
+
+  从另外一个层面上来说，单独定义算法类，也方便了单元测试，因为可以通过自己的算法进行单独测试。
+
+  实践中，不仅可以封装算法，也可以用来封装几乎任何类型的规则，是要在分析过程中需要在不同时间应用不同的业务规则，就可以考虑是要策略模式来处理各种变化。
+  <p>
+  </p>
+  <h4>使用场景</h4>
+  主要用在有多种状态或者策略需要进行选择的时候，将所有选择封装在一起，只给外部暴露出必要的接口
+
+</body>
+
+</html>

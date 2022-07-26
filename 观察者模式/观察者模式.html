@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    var msgCenter = (function () {
+      var _msg = {}; //存储消息
+
+      /*
+          var _msg = {
+              'carInfo':[person1.alreadyRegister.carInfo,person2.alreadyRegister.carInfo,person3.alreadyRegister.carInfo]
+              'newsInfo':[person1.alreadyRegister.newsInfo,person3.alreadyRegister.newsInfo]
+          }
+      */
+
+      return {
+        //用于订阅一个消息
+        register: function (type, fn) {
+          if (_msg[type]) {
+            _msg[type].push(fn);
+          } else {
+            _msg[type] = [fn];
+          }
+        },
+
+        // 用于发布消息
+        fire: function (type, args) {
+          if (!_msg[type]) {
+            return;
+          }
+          var event = {
+            type: type,
+            args: args || {},
+          };
+          // console.log(event)
+          for (var i = 0; i < _msg[type].length; i++) {
+            // console.log(_msg[type][i]);
+            _msg[type][i](event);
+          }
+        },
+ 
+        //用于取消订阅
+        cancel: function (type, fn) {
+          if (!_msg[type]) {
+            return;
+          }
+          for (var i = 0; i < _msg[type].length; i++) {
+            if (_msg[type][i] === fn) {
+              _msg[type].splice(i, 1);
+              break;
+            }
+          }
+        },
+      };
+    })();
+
+    function Person() {
+      this.alreadyRegister = {};
+    }
+
+    Person.prototype.register = function (type, fn) {
+      if (this.alreadyRegister[type]) {
+        console.log("已订阅过了");
+      } else {
+        msgCenter.register(type, fn);
+        this.alreadyRegister[type] = fn;
+      }
+    };
+
+    Person.prototype.cancel = function (type, fn) {
+      msgCenter.cancel(type, this.alreadyRegister[type]);
+      delete this.alreadyRegister[type];
+    };
+
+    var person1 = new Person();
+    var person2 = new Person();
+    var person3 = new Person();
+
+    person1.register("carInfo", function (e) {
+      console.log("person1得到了" + e.type + "得消息，是：" + e.args.info);
+    });
+
+    person1.register("newsInfo", function (e) {
+      console.log("person1得到了" + e.type + "得消息，是：" + e.args.info);
+    });
+
+    person2.register("carInfo", function (e) {
+      console.log("person2得到了" + e.type + "得消息，是：" + e.args.info);
+    });
+
+    person3.register("carInfo", function (e) {
+      console.log("person3得到了" + e.type + "得消息，是：" + e.args.info);
+    });
+
+    person3.register("newsInfo", function (e) {
+      console.log("person3得到了" + e.type + "得消息，是：" + e.args.info);
+    });
+
+    msgCenter.fire("carInfo", { info: "新车上市" });
+    msgCenter.fire("newsInfo", { info: "日本地震" });
+
+    //   测试重复订阅
+    //   person1.register("carInfo", function (e) {
+    //     console.log("person1得到了" + e.type + "得消息，是：" + e.args.info);
+    //   });
+
+    person1.cancel("carInfo");
+    msgCenter.fire("carInfo", { info: "回收二手车" });
+  </script>
+</head>
+
+<body>
+  <h4>介绍</h4>
+  <p>
+    观察者模式又叫发布订阅模式（Publish/Subscribe），它定义了一种一对多的关系，让多个观察者对象同时监听某一个主题对象，这个主题对象的状态发生变化时就会通知所有的观察者对象，使得它们能够自动更新自己。
+  </p>
+  <div>
+    使用观察者模式的好处：
+    <ol>
+      <li>
+        支持简单的广播通信，自动通知所有已经订阅过的对象。
+      </li>
+      <li>页面载入后目标对象很容易与观察者存在一种动态关联，增加了灵活性。</li>
+      <li>目标对象与观察者之间的抽象耦合关系能够单独扩展以及重用。</li>
+    </ol>
+  </div>
+
+
+
+
+
+  <h4>使用场景</h4>
+  观察者的使用场合就是：当一个对象的改变需要同时改变其它对象，并且它不知道具体有多少对象需要改变的时候，就应该考虑使用观察者模式。
+
+  总的来说，观察者模式所做的工作就是在解耦，让耦合的双方都依赖于抽象，而不是依赖于具体。从而使得各自的变化都不会影响到另一边的变化。
+</body>
+
+</html>

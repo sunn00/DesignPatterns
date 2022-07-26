@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    // 一般写法
+    //   window.onload = function () {
+    //     var aLis = document.getElementsByTagName("li");
+    //     for (var i = 0; i < aLis.length; i++) {
+    //       (function (i) {
+    //         aLis[i].onclick = function () {
+    //           console.log(i);
+    //         };
+    //       })(i);
+    //     }
+    //   };
+    /*
+      1.需要每个li绑定不同的事件，会造成性能损失和内存占用
+      2.新增的li不会重新绑定事件
+    */
+
+    //   -----------------------------------
+    window.onload = function () {
+      var oUl = document.querySelector("ul");
+      oUl.onclick = function (e) {
+        var e = e || window.event;
+        var target = e.target || e.srcElement;
+
+        if (target.nodeName.toLowerCase() === "li") {
+          console.log(target.innerHTML);
+        }
+      };
+
+      var oLi = document.createElement("li");
+      oLi.innerHTML = "eee";
+      oUl.appendChild(oLi);
+    };
+  </script>
+</head>
+
+<body>
+  <ul id="ul1">
+    <li>aaa</li>
+    <li>bbb</li>
+    <li>ccc</li>
+    <li>ddd</li>
+  </ul>
+
+  <hr>
+
+  <h4>介绍</h4>
+  <p>
+    当多个对象需要处理同一请求时，可以将这些请求交由另一个对象统一处理。
+  </p>
+  <p>
+    代理模式（Proxy），为其他对象提供一种代理以控制对这个对象的访问。
+  </p>
+  <p>
+    代理模式使得代理对象控制具体对象的引用。代理几乎可以是任何对象：文件，资源，内存中的对象，或者是一些难以复制的东西。
+  </p>
+  <h4>使用场景</h4>
+  代理模式一般适用于如下场合：
+  <ol>
+    <li>远程代理，也就是为了一个对象在不同的地址空间提供局部代表，这样可以隐藏一个对象存在于不同地址空间的事实，就像web service里的代理类一样。</li>
+    <li>
+      虚拟代理，根据需要创建开销很大的对象，通过它来存放实例化需要很长时间的真实对象，比如浏览器的渲染的时候先显示问题，而图片可以慢慢显示（就是通过虚拟代理代替了真实的图片，此时虚拟代理保存了真实图片的路径和尺寸。
+    </li>
+    <li>
+      安全代理，用来控制真实对象访问时的权限，一般用于对象应该有不同的访问权限。
+    </li>
+    <li>
+      智能指引，只当调用真实的对象时，代理处理另外一些事情。例如C#里的垃圾回收，使用对象的时候会有引用次数，如果对象没有引用了，GC就可以回收它了。
+      参考：《大话设计模式》
+    </li>
+  </ol>
+</body>
+
+</html>
